@@ -1,16 +1,14 @@
 <template>
-  <b-navbar toggleable="lg" type="light" variant="light" class="top-nav">
-    <b-navbar-brand href="/">
-      <i class="fas fa-home"></i>
-    </b-navbar-brand>
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item href="/about">About</b-nav-item>
-        <b-nav-item href="/contact">Contact</b-nav-item>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+  <v-app-bar :elevation="2">
+    <v-btn icon="mdi-washing-machine" href="/"></v-btn>
+    <v-app-bar-title>Christos's Dry Cleanner</v-app-bar-title>
+
+    <template v-slot:append>
+      <v-btn icon="mdi-magnify"></v-btn>
+      <v-btn icon="mdi-cog-outline"></v-btn>
+      <v-btn icon="mdi-dots-vertical"></v-btn>
+    </template>
+  </v-app-bar>
 </template>
 
 <script>
@@ -21,18 +19,11 @@ export default {
 
 <style scoped>
 .top-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background-color: #ffffff;
   padding: 10px;
   border-bottom: 1px solid #dcdcdc;
   position: sticky;
   top: 0;
   z-index: 1000;
-}
-
-.top-nav .fa-home {
-  font-size: 24px; /* Adjust icon size */
 }
 </style>

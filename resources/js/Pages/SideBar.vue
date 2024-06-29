@@ -1,78 +1,96 @@
 <template>
-  <div class="sidebar" :class="{ open: isOpen }">
-    <ul>
-      <li><router-link to="/">Home</router-link></li>
+  <v-navigation-drawer
+    v-model="drawer"
+    :rail="rail"
+    permanent
+    @click="rail = false"
+  >
+    <v-list-item
+      :prepend-avatar="avatarDataUrl"
+      title="Χρήστος"
+      nav
+    >
+      <template v-slot:append>
+        <v-btn
+          icon="mdi-chevron-left"
+          variant="text"
+          @click.stop="rail = !rail"
+        ></v-btn>
+      </template>
+    </v-list-item>
+    
+    <v-divider></v-divider>
 
-      <li><router-link to="/">Πελάτες</router-link></li>
-
-      <li><router-link to="/">Υπηρεσίες</router-link></li>
-
-      <li><router-link to="/about">About</router-link></li>
-      <li><router-link to="/contact">Contact</router-link></li>
-    </ul>
-    <button class="sidebar-toggle-button" @click="$emit('toggle-sidebar')">
-      <i :class="isOpen ? 'fas fa-arrow-left' : 'fas fa-arrow-right'"></i>
-    </button>
-  </div>
+    <v-list density="compact" nav>
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        :prepend-icon="item.icon || 'mdi-menu'"
+        :title="item.title"
+        :value="item.route"
+        :to="item.route"
+      ></v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
 export default {
-  name: "SideBar",
+  name: 'SideBar',
   props: {
-    isOpen: {
-      type: Boolean,
-      required: true,
+
+  },
+  data() {
+    return {
+      isOpen: true,
+      avatarDataUrl: '', // Initialize avatarDataUrl
+      drawer: true,
+      rail: false,
+      items: [
+        { title: 'Πελάτες', route: '/customers', icon: 'mdi-account' },
+        { title: 'Υπηρεσίες', route: '/services', icon: 'mdi-iron' },
+        { title: 'Αποδεικτικά', route: '/documents', icon: 'mdi-file-document' },
+        { title: 'Χρήστες', route: '/users', icon: 'mdi-account-group-outline' },
+        { title: 'About', route: '/about', icon: 'mdi-information' },
+      ],
+    };
+  },
+
+  watch: {
+    isOpen(newVal) {
+      this.drawer = newVal;
+    },
+    drawer(newVal) {
+      this.$emit('update:isOpen', newVal);
+    }
+  },
+  created() {
+    this.fetchAvatarImage();
+  },
+
+  methods: {
+    async fetchAvatarImage() {
+      try {
+        const response = await axios.get('/api/user/avatar', {
+          responseType: 'blob'
+        });
+
+        const reader = new FileReader();
+        reader.readAsDataURL(response.data);
+        reader.onloadend = () => {
+          this.avatarDataUrl = reader.result;
+        };
+      } catch (error) {
+        console.error('Error fetching avatar image:', error);
+        // Handle the error appropriately
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-.sidebar {
-  width: 150px;
-  background-color: #f0f2f5; /* Lighter color */
-  color: #000000;
-  padding: 10px;
-  position: fixed;
-  height: 100%;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  border-right: 1px solid #dcdcdc; /* Add border on the right side */
-  z-index: 1000; /* Ensure the sidebar is above other elements */
-}
-
-.sidebar.open {
-  transform: translateX(0);
-}
-
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar li {
-  margin: 10px 0;
-}
-
-.sidebar-toggle-button {
-  position: absolute;
-  top: 10px;
-  right: -30px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #495057;
-  padding: 5px;
-  transition: color 0.3s ease;
-}
-
-.sidebar-toggle-button:hover {
-  color: #000;
-}
-
-.sidebar-toggle-button i {
-  transition: transform 0.3s ease;
-}
+  .v-list-item {
+    cursor: pointer;
+  }
 </style>
