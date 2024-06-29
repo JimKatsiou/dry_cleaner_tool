@@ -63,7 +63,7 @@ const routes = [
     },
     // USERS - END
     
-    
+    // REST - START
     {
         path: "/about",
         component: () => import("../Pages/About.vue"),
@@ -72,6 +72,7 @@ const routes = [
         path: "/contact",
         component: () => import("../Pages/Contact.vue"),
     },
+    // REST - END
 ];
 
 export default createRouter({
