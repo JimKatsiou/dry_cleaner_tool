@@ -32,8 +32,8 @@
   <script>
   import { ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import NavBar from './NavBar.vue';
-  import SideBar from './SideBar.vue';
+  import NavBar from '../NavBar.vue';
+  import SideBar from '../SideBar.vue';
   
   export default {
     name: 'CustomerShow',

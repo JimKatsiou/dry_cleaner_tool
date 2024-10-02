@@ -4,7 +4,9 @@
     :rail="rail"
     permanent
     @click="rail = false"
+    class="sidebar-container"
   >
+    <!-- Sidebar content -->
     <v-list-item
       :prepend-avatar="avatarDataUrl"
       title="Χρήστος"
@@ -21,7 +23,7 @@
     
     <v-divider></v-divider>
 
-    <v-list density="compact" nav>
+    <v-list dense nav>
       <v-list-item
         v-for="item in items"
         :key="item.title"
@@ -31,6 +33,18 @@
         :to="item.route"
       ></v-list-item>
     </v-list>
+
+    <!-- Footer -->
+    <div class="w-100" style="background-color: #f5f5f5;">
+      <v-divider></v-divider>
+      <v-list dense nav>
+        <!-- List item for version -->
+        <v-list-item @click="redirectToReleaseNotes">
+          <v-list-item-title>Version {{ version }}</v-list-item-title>
+          <v-list-item-subtitle>© 2024 Tech Code - D.K.</v-list-item-subtitle>
+        </v-list-item>
+      </v-list>
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -53,6 +67,7 @@ export default {
         { title: 'Χρήστες', route: '/users', icon: 'mdi-account-group-outline' },
         { title: 'About', route: '/about', icon: 'mdi-information' },
       ],
+      version: import.meta.env.VITE_APP_VERSION // Accessing the version variable
     };
   },
 
@@ -66,10 +81,13 @@ export default {
   },
   created() {
     this.fetchAvatarImage();
+    console.log('Current version:', this.version); // Log to console
   },
 
   methods: {
     async fetchAvatarImage() {
+      // Fetch avatar image logic
+      // Example: Replace with your actual avatar fetching logic using axios
       try {
         const response = await axios.get('/api/user/avatar', {
           responseType: 'blob'
@@ -85,6 +103,10 @@ export default {
         // Handle the error appropriately
       }
     },
+    redirectToReleaseNotes() {
+      // Redirect logic to the release notes page
+      window.location.href = '/release-notes';
+    },
   },
 };
 </script>
@@ -93,4 +115,11 @@ export default {
   .v-list-item {
     cursor: pointer;
   }
+
+  .sidebar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure sidebar takes full height */
+    position: relative; /* Ensure footer positioning works */
+  }  
 </style>

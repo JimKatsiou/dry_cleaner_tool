@@ -5,8 +5,8 @@ import { BNavbar, BNavbarBrand, BNavbarToggle, BNavbarNav, BNavItem, BCollapse }
 
 import vuetify from './plugins/vuetify';
 import 'vuetify/dist/vuetify.min.css';
-import '@mdi/font/css/materialdesignicons.css'; // Ensure you are importing the MDI CSS
-import 'vuetify/styles'; // Ensure you are importing the Vuetify styles
+import '@mdi/font/css/materialdesignicons.css'; // MDI icons
+import 'vuetify/styles'; // Vuetify styles
 
 import { loadFonts } from './plugins/webfontloader';
 
